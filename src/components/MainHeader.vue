@@ -111,8 +111,10 @@ nav svg {
 }
 
 nav nav {
+  display: flex;
+  flex-direction: column;
   position: absolute;
-  top: 40px;
+  top: 50px;
   right: 8px;
   width: 150px;
   border-radius: 8px;
@@ -122,6 +124,12 @@ nav nav {
   pointer-events: none;
   transition: all 0.2s linear;
   z-index: 1;
+}
+
+@media (min-width: 992px) {
+  nav nav {
+    top: 40px;
+  }
 }
 
 nav nav.show {
@@ -144,7 +152,6 @@ nav nav:after {
 }
 
 nav nav a {
-  display: block;
   color: var(--ds-color-dark);
   font-size: 1rem;
   font-weight: 400;
