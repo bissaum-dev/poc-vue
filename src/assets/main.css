@@ -1,0 +1,17 @@
+@import './fonts.css';
+@import './tokens.css';
+@import './base.css';
+
+.product-list {
+  display: flex;
+  justify-content: left;
+  flex-wrap: wrap;
+  gap: 30px;
+  padding: 0;
+}
+
+@media (min-width: 992px) {
+  .product-list {
+    padding: 30px;
+  }
+}
