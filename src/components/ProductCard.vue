@@ -7,9 +7,17 @@ import ProductRating from '@/components/ProductRating.vue'
 <script lang="ts">
 export default {
   props: {
+    productId: {
+      type: String,
+      required: true,
+    },
     image: {
       type: String,
       required: true,
+    },
+    isActive: {
+      type: Boolean,
+      default: false,
     },
     isFavorite: {
       type: Boolean,
@@ -31,15 +39,36 @@ export default {
       type: String,
       default: '0',
     },
+    onToggle: {
+      type: Function,
+      default: () => {},
+    },
+    onRemove: {
+      type: Function,
+      default: () => {},
+    },
   },
   data() {
     return {
-      isActive: false,
+      isActiveLocal: this.isActive,
+      showCard: true,
+      isAnimating: false,
     }
+  },
+  watch: {
+    isActive(newValue) {
+      this.isActiveLocal = newValue
+    },
   },
   methods: {
     toggle() {
-      this.isActive = !this.isActive
+      this.isActiveLocal = !this.isActiveLocal
+      this.$emit('update:isActive', this.isActiveLocal)
+      this.onToggle(this.isActiveLocal)
+    },
+    remove(id: string) {
+      this.onRemove(id)
+      this.isAnimating = true
     },
     currency(value: number) {
       return value.toLocaleString('pt-BR', {
@@ -47,24 +76,36 @@ export default {
         currency: 'BRL',
       })
     },
+    onAnimationEnd() {
+      if (this.isAnimating) {
+        this.showCard = false
+        this.isAnimating = false
+      }
+    },
   },
 }
 </script>
 
 <template>
-  <div class="card">
+  <div
+    class="card"
+    v-if="showCard"
+    :class="['parent', { 'zoom-out': isAnimating }]"
+    @animationend="onAnimationEnd"
+  >
     <p v-if="!isFavorite" class="action favorite">
-      <a :class="isActive ? 'active' : 'idle'" href="javascript:" @click="toggle">
+      <a :class="isActiveLocal ? 'active' : 'idle'" href="javascript:" @click="toggle">
         <HeartIcon />
       </a>
     </p>
     <p v-if="isFavorite" class="action remove">
-      <a href="javascript:" @click="toggle">
+      <a href="javascript:" @click="remove(productId)">
         <CloseIcon />
       </a>
     </p>
     <div class="product">
-      <img :src="image" alt="Produto" />
+      <img v-if="image" :src="image" alt="Produto" />
+      <img v-if="!image" src="/fallback.png" alt="Produto" />
     </div>
     <div class="offer">
       <h3 aria-label="Nome do Produto" class="title-product" :title="product">{{ product }}</h3>
@@ -80,6 +121,19 @@ export default {
 </template>
 
 <style scoped>
+@keyframes zoomOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
+.zoom-out {
+  animation: zoomOut 0.2s forwards;
+}
 .card {
   position: relative;
   padding: 6px;
@@ -87,7 +141,7 @@ export default {
   border-radius: 4px;
   box-shadow: 1px 1px 4px var(--ds-color-gray);
   background: var(--ds-color-white);
-  transition: box-shadow 0.2s linear;
+  transition: all 0.2s linear;
   cursor: pointer;
 }
 @media (min-width: 576px) {
@@ -149,11 +203,36 @@ export default {
 }
 .card .product img {
   width: 100%;
-  height: 240px;
+  height: 500px;
   object-fit: cover;
   display: block;
   margin: 0 auto;
   border-radius: 16px;
+}
+@media (min-width: 576px) {
+  .card .product img {
+    height: 300px;
+  }
+}
+@media (min-width: 768px) {
+  .card .product img {
+    height: 400px;
+  }
+}
+@media (min-width: 992px) {
+  .card .product img {
+    height: 280px;
+  }
+}
+@media (min-width: 1200px) {
+  .card .product img {
+    height: 260px;
+  }
+}
+@media (min-width: 1400px) {
+  .card .product img {
+    height: 240px;
+  }
 }
 .card .offer {
   padding: 10px;

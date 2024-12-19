@@ -53,11 +53,16 @@ nav li:not(:last-child)::after {
 
 nav a {
   text-decoration: none;
-  font-size: 0.85rem;
+  font-size: 1rem;
+  color: var(--ds-color-secondary);
+}
+
+nav a:hover {
+  text-decoration: underline;
 }
 
 nav li:last-child a {
-  font-weight: 500;
+  font-weight: 700;
   pointer-events: none;
 }
 </style>

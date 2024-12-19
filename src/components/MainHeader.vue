@@ -22,9 +22,9 @@ export default {
 <template>
   <header>
     <div class="wrapper">
-      <a href="/" class="logo">
+      <RouterLink to="/" class="logo">
         <img alt="Netshoes" src="@/assets/logo.svg" width="160" height="25" />
-      </a>
+      </RouterLink>
 
       <nav aria-label="Menu">
         <RouterLink to="/wishlist">
