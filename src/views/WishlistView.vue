@@ -40,6 +40,7 @@ export default {
       <div v-if="wishlist.products.length" class="product-list">
         <ProductCard
           v-for="product in wishlist.products"
+          data-cy="product-card"
           :product-id="product.id"
           :key="product.code"
           :image="product.image"

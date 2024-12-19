@@ -46,6 +46,7 @@ export default {
       <div class="product-list">
         <ProductCard
           v-for="product in cached.products"
+          data-cy="product-card"
           :product-id="product.id"
           :key="product.code"
           :image="product.image"

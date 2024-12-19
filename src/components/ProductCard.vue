@@ -94,12 +94,17 @@ export default {
     @animationend="onAnimationEnd"
   >
     <p v-if="!isFavorite" class="action favorite">
-      <a :class="isActiveLocal ? 'active' : 'idle'" href="javascript:" @click="toggle">
+      <a
+        data-cy="favorite-button"
+        :class="isActiveLocal ? 'active' : 'idle'"
+        href="javascript:"
+        @click="toggle"
+      >
         <HeartIcon />
       </a>
     </p>
     <p v-if="isFavorite" class="action remove">
-      <a href="javascript:" @click="remove(productId)">
+      <a data-cy="remove-button" href="javascript:" @click="remove(productId)">
         <CloseIcon />
       </a>
     </p>
